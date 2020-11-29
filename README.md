@@ -4,9 +4,14 @@ This repository contains templates for quickly setting up projects
 
 ### create-project.sh
 
-A script that creates a new project in the current directory and instantiates it.
+A script to creates a new project in the current directory.
 
-It's meant to be simple and readable. Instead of trying to accomodate
+It's meant to be simple and readable and handle common case with as little
+hassle as possible
+
+* Do the boring legwork to get a functioning project
+* Fill in the most common information using mustache
+* Don't bother the user for information if it can be filled in later
 
 #### Requirements
 
