@@ -13,6 +13,18 @@ hassle as possible
 * Fill in the most common information using mustache
 * Don't bother the user for information if it can be filled in later
 
+#### What does it do?
+
+* Copy the template
+* Fill in variables in `.mustache` files
+* `git init`, `git add ./*` and `git commit -m "initial commit"`
+* Optionally `git remote add origin {repository}` if remote_template is set
+* Optionally create `shell.nix`, `.envrc` and run `direnv allow` if direnv is in PATH
+
+* Add more steps as necessary by modifying the script
+* Could add `init.sh` script (or more fine-grained hooks as necessary) to
+  templates and execute them if found, left out for now because I don't need it
+
 #### Requirements
 
 * git

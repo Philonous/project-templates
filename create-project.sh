@@ -12,9 +12,9 @@ templates_repository="https://github.com/Philonous/project-templates.git"
 
 default_template="haskell/simple"
 
-# Comment this out if you don't want to set a remote repository
+# Uncomment to set remote repository
 # "%s" is replaced with the project name
-remote_template="git@github.com:/Philonous/%s.git"
+# remote_template="git@github.com:/Philonous/%s.git"
 
 ## Helpers
 ###########################
