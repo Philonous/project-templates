@@ -63,3 +63,10 @@ A simple haskell project
 #### Requirements
 * stack
 * make (optional)
+
+## new-project.el
+
+An emacs lisp snippet to call create-project.sh from within emacs.
+
+To install, copy or symlink into your .emacs.d (or another configuration
+directory) and add (load "~/path/to/new-project.el") to your `~/.emacs.d/init.el` or `~/.emacs`
