@@ -8,7 +8,7 @@ set -euo pipefail
 # Use git to fetch templates
 templates_repository="https://github.com/Philonous/project-templates.git"
 # Alternatively use local folder
-# templates="$HOME/templates/haskell/simple"
+# templates="$HOME/templates"
 
 default_template="haskell/simple"
 
@@ -27,10 +27,13 @@ cleanup () {
 trap cleanup EXIT
 
 # Check that necessary tools exist
-
 if ! command -v mustache &>/dev/null; then
-  echo >&2 "You need to install the mustache cli programme (e.g. ruby-mustache on ubuntu, mustache-go on nixos)"
-  exit 1
+  if command -v nix-shell &>/dev/null; then
+    exec nix-shell -p 'git' -p 'mustache-go' --run "$0 $*"
+  else
+    echo >&2 "You need to install the mustache cli programme (e.g. ruby-mustache on ubuntu, mustache-go on nixos)"
+    exit 1
+  fi
 fi
 
 ## Configuration
@@ -56,14 +59,14 @@ echo "Using resolver $lts"
 ## Fetch template
 ###########################
 
-if [[ -n $templates_repository ]]; then
+if [[ -n ${templates_repository:-""} ]]; then
   templates="$(realpath "$(mktemp -d "templates-XXXX")")"
   tmpfiles+=( "$templates" )
 
   git clone -q "$templates_repository" --depth 1 "$templates"
 fi
 
-if [[ -n $2 ]]; then
+if [[ -n ${2:-""} ]]; then
   template="$templates/$2"
 else
   template="$templates/$default_template"
