@@ -12,6 +12,10 @@ templates_repository="https://github.com/Philonous/project-templates.git"
 
 default_template="haskell/simple"
 
+# Comment this out if you don't want to set a remote repository
+# "%s" is replaced with the project name
+remote_template="git@github.com:/Philonous/%s.git"
+
 ## Helpers
 ###########################
 
@@ -109,6 +113,11 @@ done
 git init >/dev/null
 git add ./*
 git commit -m "Initial commit" >/dev/null
+
+if [[ -n ${remote_template:=""} ]]; then
+  # shellcheck disable=SC2059
+  git remote add origin "$(printf "$remote_template" "$project")"
+fi
 
 ## Direnv
 ###########################
