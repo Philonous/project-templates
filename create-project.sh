@@ -111,9 +111,9 @@ git commit -m "Initial commit" >/dev/null
 ###########################
 
 if (command -v direnv &>/dev/null); then
-  cat > .envrc <<'EOF'
+  cat > .envrc <<EOF
 use nix
-export NIX_PATH="nixpkgs=/home/phil/.nix-defexpr/channels/nixpkgs-unstable"
+export NIX_PATH="nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs-unstable"
 
 # Stop problems with certificates that can't be found
 unset NIX_SSL_CERT_FILE
