@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Create a project from a template in the current directory and run boilerplate
+# actions to initialize
+#
+# Doesn't try to be too clever, you have to adjust the project afterwards
+# anyway, so no need for the kitchen sink.
+#
+# Guiding principle: Don't bother the user.
+#
+# Usage: create-project.sh {project-name} {optional: template}
+
 set -euo pipefail
 
 ## Constants / script configuration
@@ -10,6 +20,7 @@ templates_repository="https://github.com/Philonous/project-templates.git"
 # Alternatively use local folder
 # templates="$HOME/templates"
 
+# Which template (subdirectory) to use from the repository
 default_template="haskell/simple"
 
 # Uncomment to set remote repository
@@ -32,6 +43,7 @@ trap cleanup EXIT
 
 # Check that necessary tools exist
 if ! command -v mustache &>/dev/null; then
+  # Just use nix to get mustache if it's not available. Remove if unwanted.
   if command -v nix-shell &>/dev/null; then
     exec nix-shell -p 'git' -p 'mustache-go' --run "$0 $*"
   else
@@ -63,6 +75,7 @@ echo "Using resolver $lts"
 ## Fetch template
 ###########################
 
+# Fetch template from git
 if [[ -n ${templates_repository:-""} ]]; then
   templates="$(realpath "$(mktemp -d "templates-XXXX")")"
   tmpfiles+=( "$templates" )
@@ -70,12 +83,12 @@ if [[ -n ${templates_repository:-""} ]]; then
   git clone -q "$templates_repository" --depth 1 "$templates"
 fi
 
+# Choose template from directory
 if [[ -n ${2:-""} ]]; then
   template="$templates/$2"
 else
   template="$templates/$default_template"
 fi
-
 if ! [[ -d $template ]]; then
   echo >&2 "Template: $template does not exist or is not a directory"
   exit 1
@@ -108,14 +121,19 @@ find . -iname '*.mustache' -type f -print0 | while read -d $'\0' -r template; do
   rm "$template"
 done
 
+# Avoid having configfile in git
+rm "$configfile"
+
 ## Git
 ###########################
 git init >/dev/null
 git add ./*
+git add ./.gitignore
 git commit -m "Initial commit" >/dev/null
 
 if [[ -n ${remote_template:=""} ]]; then
   # shellcheck disable=SC2059
+  # (We really mean to use a variable in the format string)
   git remote add origin "$(printf "$remote_template" "$project")"
 fi
 
@@ -125,6 +143,7 @@ fi
 if (command -v direnv &>/dev/null); then
   cat > .envrc <<EOF
 use nix
+# Avoid problems with executables not found
 export NIX_PATH="nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs-unstable"
 
 # Stop problems with certificates that can't be found
