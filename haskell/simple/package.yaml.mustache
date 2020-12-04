@@ -45,7 +45,9 @@ tests:
   tests:
     dependencies:
     - {{name}}
+    - hedgehog
     - tasty
+    - tasty-hedgehog
     - tasty-hspec
     ghc-options:
     - -rtsopts
