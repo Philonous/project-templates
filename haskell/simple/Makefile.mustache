@@ -7,7 +7,7 @@ endif
 srcfiles = $(shell find src -type f)
 test-srcfiles = $(shell find test-suite -type f)
 
-tests = dist/tests/{{name}}-test-suite
+tests = dist/tests/tests
 
 .PHONY: build
 build: dist/{{name}} $(tests)
@@ -28,7 +28,7 @@ dist/{{name}}: $(srcfiles) package.yaml stack.yaml
 
 .PHONY: test
 test: export TASTY_NUM_THREADS=1
-test: $(tests) baseimage
+test: $(tests)
 	sh -c 'for t in dist/tests/*; do $$t; done'
 
 .PHONY: clean
