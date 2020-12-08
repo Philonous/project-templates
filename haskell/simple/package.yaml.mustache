@@ -6,6 +6,52 @@ maintainer: {{author}}
 
 dependencies:
   - base
+  - aeson
+  - async
+  - bytestring
+  - containers
+  - data-default
+  - lens
+  - mtl
+  - text
+
+default-extensions:
+  - ApplicativeDo
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveLift
+  - DerivingStrategies
+  - DerivingVia
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GeneralisedNewtypeDeriving
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NumericUnderscores
+  - OverloadedLabels
+  - OverloadedStrings
+  - PatternSynonyms
+  - PolyKinds
+  - QuantifiedConstraints
+  - QuasiQuotes
+  - RankNTypes
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeFamilyDependencies
+  - TypeOperators
+  - UndecidableInstances
+  - ViewPatterns
 
 ghc-options:
     - -Wall
@@ -31,14 +77,6 @@ executables:
 
 library:
   dependencies:
-  - aeson
-  - async
-  - bytestring
-  - containers
-  - data-default
-  - lens
-  - mtl
-  - text
   source-dirs: src
 
 tests:
