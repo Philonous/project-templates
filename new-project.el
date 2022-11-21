@@ -18,19 +18,20 @@
   :type 'file
   :group 'new-project)
 
-(defun new-project (dont-ask-template project-name &optional template)
+(defun new-project (dont-ask-template project-name &optional template directory)
   "Create a new project"
   (interactive "P\nsName: ")
   (make-directory new-project--project-directory t)
-  (let* ((default-directory new-project--project-directory)
-         (template (if (not dont-ask-template)
+  (let* ( (template (if (not dont-ask-template)
                        (completing-read "Template: " new-project--templates)))
+         (default-directory (if (not directory)
+                        (read-directory-name "directory: " new-project--project-directory)))
          (output-buffer (get-buffer-create (format "*new-project:%s*" project-name))))
     (with-current-buffer output-buffer
       (delete-region (point-min) (point-max)))
     (if (eq 0 (call-process new-project--executable nil output-buffer t
                             project-name template))
         (if new-project--visit-file
-            (find-file (concat new-project--project-directory "/" project-name
+            (find-file (concat default-directory "/" project-name
                                new-project--visit-file )))
       (switch-to-buffer output-buffer))))
